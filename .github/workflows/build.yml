@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Unzip project if needed
+        run: |
+          if [ -z "$(find . -name settings.gradle.kts -not -path './.git/*' | head -n1)" ]; then
+            for z in ./*.zip; do
+              [ -f "$z" ] && unzip -oq "$z" -x "__MACOSX/*"
+            done
+          fi
       - name: Find project folder
         id: p
         run: |
